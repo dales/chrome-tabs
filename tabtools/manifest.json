@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"author": "Dale Schaffer",
+	"name": "Tab Tools",
+	"description": "Do several tab manipulations",
+	"version": "1.0",
+
+	"browser_action": {
+		"default_icon": "src/images/icon.png",
+		"default_popup": "popup.html",
+		"default_title": "Tab Tools"
+	},
+	"permissions": [
+		"activeTab",
+		"tabs",
+		"storage",
+		"debugger"
+	],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+
+}

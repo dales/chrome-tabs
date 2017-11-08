@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+	<head>
+		<title>TabTools</title>
+		<link rel="stylesheet" href="src/css/bootstrap.css">
+		<link href="src/css/style.css" rel="stylesheet">
+		<link href="src/css/font-awesome.min.css" rel="stylesheet">
+
+	</head>
+	<style>
+		.title {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden
+		}
+
+		#tab-list {
+			overflow-y: scroll;
+			height: calc(100vh - 197px);
+			margin-bottom: 0;
+		}
+
+		i.fa-close:hover {
+			cursor: pointer;
+			color: red;
+			font-size: 1.1em;
+			transition: 0.1s linear
+		}
+
+		.active {
+			color: #429dce;
+			font-size: 0.7em
+		}
+	</style>
+
+	<body ng-app="TabTools" ng-controller="MasterController">
+		<div class="container-fluid" style="height: 100%; overflow-y: scroll;">
+			<div class="well">
+				<div class="btn btn-default" ng-click="muteAll()">Mute All
+					<i class="fa fa-volume-off"></i>
+				</div>
+				<div class="btn btn-default" ng-click="unmuteAll()">UnMute All
+					<i class="fa fa-volume-up"></i>
+				</div>
+				<div class="btn btn-default" ng-click="group()">Group Similar
+					<i class="fa fa-th"></i>
+				</div>
+			</div>
+			<div class="input-group" style="margin-bottom: 5px">
+				<div class="input-group-addon">
+					<i class="fa fa-search"></i>
+				</div>
+				<input type="text" class="form-control" autofocus placeholder="Search" ng-model="filter" ng-model-options="{debounce: 300}" ng-change="updateFilteredResults()">
+				<div class="input-group-btn">
+					<div class="btn btn-default" ng-click="fileredTabs.length == 0 || closeAll()" ng-disabled="fileredTabs.length == 0">Close All</div>
+				</div>
+			</div>
+			<ul class="list-group" id="tab-list">
+				<li class="list-group-item" ng-if="fileredTabs.length == 0">NO TABS FOUND</li>
+				<a class="list-group-item" ng-repeat="tab in fileredTabs">
+					<div class="row">
+						<div class="col-sm-2">
+							<img src="{{ tab.favIconUrl || 'https://www.google.com/chrome/assets/landing/images/icons/product/chrome-flat-32.png' }}" alt="" height="20" width="20" />
+							<i class="fa fa-fw active" ng-class="{'fa-circle': tab.active}"></i>
+							<i class="fa fa-fw" ng-class="{'fa-volume-off': tab.audible && tab.muted, 'fa-volume-up': tab.audible && !tab.muted}" ng-click="toggleSound(tab)"></i>
+						</div>
+						<div class="col-sm-9 title" ng-click="activateTab(tab)">{{ tab.title }} </div>
+						<div class="col-sm-1">
+							<i class="fa fa-close" ng-click="closeTab(tab)"></i>
+						</div>
+						<!-- <div class="col-sm-3">{{getSite(tab.url)}}</div> -->
+					</div>
+				</a>
+			</ul>
+			<!-- <table class="table table-condensed table-hover">
+				<thead>
+					<th class="col-md-3"></th>
+					<th class="col-md-3">URL</th>
+					<th class="col-md-3">Site</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="tab in tabs | orderBy: 'url' track by $index">
+						<td><img src="{{ tab.favIconUrl }}" alt="?" height="20" width="20"></td>
+						<td> <div class="btn btn-danger btn-xs" ng-click="closeTab(tab)"><i class="fa fa-times"></i></div> {{getSite(tab.url)}}</td>
+						<td>{{ tab.title }}</td>
+					</tr>
+				</tbody>
+			</table> -->
+		</div>
+		<script src="src/js/jquery-3.2.1.min.js"></script>
+		<script src="src/js/angular.min.js"></script>
+		<script src="src/js/bootstrap.min.js"></script>
+		<script src="src/js/popup.js"></script>
+	</body>
+
+</html>
